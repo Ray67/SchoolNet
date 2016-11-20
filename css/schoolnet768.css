@@ -1,0 +1,39 @@
+@CHARSET "ISO-8859-1";
+
+.style768 {
+   visibility:visible;
+   height:auto;
+}
+.style1080 {
+   visibility:hidden;
+   height: 0px;
+}
+
+/* Styles portant sur la barre de navigation */
+
+.menu {
+	background-image: url(../icones/sprite_menu.jpg);
+	background-repeat: no-repeat;
+	background-size: auto 400%;
+	background-position: 0px 0px;
+	border: solid 1px grey;
+	height:40px;
+}
+
+
+nav .menuitem {
+	visibility:inherit;
+	height:inherit;
+	
+	border: solid 1px grey;
+	width:100%;	
+}
+nav .menuitem * {
+	visibility:inherit;
+	height:inherit;
+}
+
+nav .menuitem a:hover {
+	font-weight:bold;
+	text-decoration: none;	
+}

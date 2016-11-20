@@ -1,0 +1,246 @@
+@CHARSET "ISO-8859-1";
+
+/* style géré par JQuery */
+
+/* toutes les div popup sont cachées au chargement 
+.popup {
+}
+
+/* Styles sur Div */
+.cadre {
+    border-style: solid;
+    border-color:black;
+}
+.filter {
+/* 	padding-left: 10px; */
+	padding-right: 10px;	
+}
+
+.centre {
+	align: center;
+}
+
+.gauche {
+	position: relative;
+	float:left;
+	margin-left: 15px
+}
+
+.droite {
+	position: relative;
+	float:right;
+	margin-right: 15px;
+}
+
+.textedroite{
+	text-align:right;
+}
+
+/* Styles sur document */ 
+
+.corps {
+	background-color: #ff9f40;
+	min-width: 310px;
+}
+
+header {
+	margin-top: 10px;
+}
+
+article {	
+}
+
+footer div {
+	margin-top: 10px;
+	padding: 5px 10px 5px 0px;
+	font-size: 0.8em;
+}
+
+.erreur {
+	color:red;
+	text-align: center;
+}
+
+.bloc_fonctions {
+	margin-bottom:20px;
+}
+
+.bloc_fonctions h3 {
+	color: blue;
+	border-bottom: solid 1px gray;
+}
+.datalist table {
+	min-width: 80%;
+}
+.datalist  {
+	border:dashed 1px  gray;
+}
+
+.datalist th, td{
+	border:dashed 1px  gray;
+	padding-left:10px;
+	padding-right:10px;
+}
+.datalist th {
+	text-align:center;
+}
+
+.datalist a {
+	font-size:0.8em;
+	padding-left:10px;
+	padding-right:10px;
+}
+
+/* Styles portant la coonexion */
+
+.connexion a {
+	color:black;
+}
+.connexion {
+	background-image: url(../icones/connexion.png);
+	background-repeat: no-repeat;
+	background-position:right;
+	line-height:40px;
+	padding-left:5px;
+	padding-right:55px;
+	color:black;
+}
+
+/* Styles portant sur la barre de navigation */
+
+nav .menuitem {
+	background-color: lightgrey;
+	line-height:40px;
+}
+
+nav .menuitem a {
+	margin-left:30px;	
+}
+
+.icone_profil {
+	background-image: url(../icones/sprite_menu.jpg);
+	background-repeat: no-repeat;
+	background-size: auto 400%;
+	background-position: 0% 31%;	
+}
+
+.icone_notifier {
+	background-image: url(../icones/sprite_menu.jpg);
+	background-repeat: no-repeat;
+	background-size: auto 400%;
+	background-position: 0% 63%;
+}
+
+.icone_contacter {
+	background-image: url(../icones/sprite_menu.jpg);
+	background-repeat: no-repeat;
+	background-size: auto 400%;
+	background-position: 0% 94%;
+}
+
+/* Styles portant ssection et filtre */
+
+section {
+	padding-top:15px;
+}
+
+.filtre {
+	border: dashed 1px grey;
+
+	background-image: url(../icones/filtre.png);
+	background-repeat: no-repeat;
+	line-height:36px;	
+	height:40px;
+	padding-left:60px;
+}
+
+.submitFilter {
+	height:30px;
+	vertical-align: middle;
+	color:black;
+	line-height:22px;
+}
+
+/* Styles portant sur les notifications */
+
+
+
+.notification {
+	margin-top:10px;
+	padding-top: 10px;
+	background-color: white;
+	border:solid 2px gray;
+}
+
+.notification .titre {
+	padding-top:5px;
+	
+	color: grey;
+	font-size: 0.8em;	
+	font-style: italic;
+	line-height:0em;
+}
+
+.notification .titre h1 {
+	font-size:1.25em;
+	font-weight: bold;
+	font-style: normal;
+	line-height:0.8em;
+	text-align:left;
+	padding-top:0px;
+	margin-top:0px;
+}
+
+.notification .expediteur {
+	font-size: 0.8em;
+	color: black;
+}
+
+.notification .contenu {
+	padding-top:8px;
+}
+.notification .pied {
+	padding-top:    4px;
+	padding-right: 10px;
+	padding-bottom: 4px;
+	
+	font-size: 0.8em;
+	color: black;
+	text-align:right;
+}
+
+.Info .icone_Info  {
+	background-image: url("../icones/info.png");
+	background-repeat:no-repeat;
+	padding-left:35px;
+}
+.icone_Event {
+	background-image: url("../icones/event.png");
+	background-repeat:no-repeat;
+	padding-left:35px;
+}
+.icone_Contact {
+	background-image: url("../icones/amis.png");
+	background-repeat:no-repeat;
+	padding-left:35px;
+}
+.icone_Message {
+	background-image: url("../icones/message.png");
+	background-repeat:no-repeat;
+	padding-left:35px;
+}
+
+.notif_chainage
+{
+	margin-left: 35px;
+	margin-bottom: 5px;
+	border:dashed 1px grey;
+}
+
+/* Console d'administration 
+   ------------------------
+*/
+
+h1 {
+	text-align: center;		
+}

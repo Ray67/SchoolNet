@@ -1,0 +1,40 @@
+@CHARSET "ISO-8859-1";
+
+.style768 {
+   visibility:hidden;
+   height: 0px;
+}
+.style1080 {
+   visibility:visible;
+   height:auto;
+}
+
+.connexion {
+	margin-top:20px;
+}
+
+/* Styles portant sur la barre de navigation */
+
+nav .espace {
+	margin:2px 2px 2px 2px;
+}
+nav .menuitem {	
+	cursor:pointer;
+	font-size:0.9em;
+}
+
+nav #menu_profil {
+	border-left:solid 7px #ff9f40;	
+}
+
+nav #menu_notifier {
+	border-left:solid 7px #ff9f40;	
+}
+
+nav #menu_contacter {
+	border-left:solid 7px #ff9f40;
+}
+
+nav #menu_administrer {
+	border-left:solid 7px #ff9f40;
+}

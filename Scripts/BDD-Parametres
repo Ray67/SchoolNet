@@ -1,0 +1,30 @@
+
+INSERT INTO `schoolnet`.`Profil` 
+	(`id`, `nom`, `restriction`) 
+  VALUES 
+	(NULL, 'Admin', ''), 
+	(NULL, 'Principal', ''),
+	(NULL, 'Instit', ''),
+	(NULL, 'Eleve', '');
+
+INSERT INTO `schoolnet`.`Type_Notification` 
+	(`id`, `code`, `chain_type`, `chain_action`, `chain_objets`) 
+  VALUES 
+    (NULL, 'Info',0,'Commenter','commentaires'), 
+    (NULL, 'Comment',1,'', ''), 
+    (NULL, 'Event',0,'S''inscrire','inscriptions'), 
+    (NULL, 'Inscrit',3,'',''), 
+    (NULL, 'Contact',0,'Accepter','réponses'), 
+    (NULL, 'Message',0,'Répondre','réponses');
+
+    
+INSERT INTO `schoolnet`.`Authentification` 
+	(`id`, `nom`, `password`, `param_connect`, `der_connexion`, `ip_connexion`, `profil_id`) 
+  VALUES 
+    (NULL, 'schoolnet', 'schoolnet', NULL, NULL, NULL, '1'); 
+    
+INSERT INTO `schoolnet`.`membre` 
+	(`id`, `nom`, `classe_id`, `authen_id`) 
+  VALUES 
+  	(NULL, 'Administrateur', '', '1'); 
+  	

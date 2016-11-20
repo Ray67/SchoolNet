@@ -1,0 +1,91 @@
+    
+INSERT INTO `schoolnet`.`Ecole` 
+    (`id`, `nom`) 
+  VALUES 
+    (NULL, 'Maternelle LE PARTERRE'), 
+    (NULL, 'ECOLE LAVIEU');
+    
+INSERT INTO `schoolnet`.`classe` 
+	(`id`, `nom`, `ecole_id`) 
+  VALUES 
+  	(NULL, 'CP'  , '1'), 
+  	(NULL, 'CP'  , '2'), 
+  	(NULL, 'CE-1', '2'), 
+  	(NULL, 'CE-2', '2'), 
+  	(NULL, 'CM-1', '2'), 
+  	(NULL, 'CM-2', '2'),
+  	(NULL, 'GS'  , '1');
+
+/* permet de tester les connexions */
+        
+INSERT INTO `schoolnet`.`Authentification` 
+	(`id`, `nom`, `password`, `param_connect`, `der_connexion`, `ip_connexion`, `profil_id`) 
+  VALUES  
+    (NULL, 'M. LATHUILLIERE', 'Lat', NULL, NULL, NULL, '2'),
+    (NULL, 'Mlle PIVERT', 'Piv', NULL, NULL, NULL, '3'),
+    (NULL, 'Famille SOUTO', 'Sou', NULL, NULL, NULL, '4'),
+    (NULL, 'Famille de Coralie', 'Cor', NULL, NULL, NULL, '4'),
+    (NULL, 'Famille de Nathan', 'Nat', NULL, NULL, NULL, '4'),
+    (NULL, 'Mme REVOLLON', 'Rev', NULL, NULL, NULL, '2'),
+    (NULL, 'Nathalie', 'Nat', NULL, NULL, NULL, '3'),
+    (NULL, 'Famille de Nolann', 'Nat', NULL, NULL, NULL, '4');
+    
+INSERT INTO `schoolnet`.`membre` 
+	(`nom`, `classe_id`, `authen_id`) 
+  VALUES 
+  	('LATHUILLIERE', '6', '2'), 
+  	('Arlette PIVERT', '2', '3'), 
+  	('Elsa SOUTO', '2', '4'), 
+  	('Coralie', '3', '5'), 
+  	('Antoine SOUTO', '2', '4'),
+  	('Nathan', '1', '6'),
+  	('Marie-Christine REVOLLON', '7','7'),
+  	('Nathalie','1','8'),
+  	('Nolann', '1','9');
+  	
+ /* permet de tester l'affichage des notifications publiques */ 
+ 
+  INSERT INTO `schoolnet`.`notification` 
+ 	(`type_id`, `date_creation`, `emeteur_id`, `visu_public`, `visu_ecole`, `visu_classe`, `titre`, `contenu`) 
+ 	VALUES 
+ 	('1', '2016-08-25 00:00:00', '2', true,2,0, 'Rentrée 2016',' La rentrée s''effectuera le Mardi 6 Septembre pour les élève de CP, CE-1 et CE-2. Les élève de CM-1 et CM2 rentreront, quant à eux, le jeudi 8 Septembre. Bonne rentrée à toutes et tous'),
+ 	('3', '2016-07-03 00:00:00', '3', true,0,2, 'Journées européenne du patrimoine','Le mois de Septembre correspond également aux journées européennes du patrimoine. A ce titre, la classe de CP de Lavieu organise une sortie. Merci aux parents de s''inscrire pour encadrer le groupe.'),
+ 	('1', '2016-07-03 00:00:00', '8', true,1,0, 'Panne de la chaudière','Nous invitons les parents à garder leur enfants' ),
+ 	('1', '2016-07-03 00:00:00', '9', true,0,7, 'Ateliers de travaux manuels','Dans le cadre de notre atelier, nous aurions besoin de bouchons plastiques' );  
+    
+ /* permet de tester l'affichage des notifications privées */  
+
+ INSERT INTO `schoolnet`.`notification` 
+ 	(`type_id`, `date_creation`, `emeteur_id`, `visu_public`, `visu_ecole`, `visu_classe`, `titre`, `contenu`) 
+ 	VALUES 
+ 	('3', '2016-09-27 00:00:00', '5', false,0,0, 'Invitation pour Elsa','Coralie organise son anniversaire à "L''île aux délires", le 12 Octobre. Est-ce que tu veux venir ?'),
+ 	('6', '2016-09-28 00:00:00', '7', false,0,0, 'Message à Antoine','Hey Antoine, tu descends ???'),
+ 	('5', '2016-09-01 00:00:00', '10', false,0,0, 'Nolann veut devenir ton ami, Antoine','');
+  
+ INSERT INTO `schoolnet`.`Destinataire`
+    (`notification_id`,`membre_id`)
+ 	VALUES 
+    ('5','4'),
+    ('5','7'),
+    ('6','6'),
+    ('7','6');
+ 
+/* permet de tester l'obsolescence des notifications */
+  INSERT INTO `schoolnet`.`notification` 
+ 	(`type_id`, `date_creation`, `date_validite`, `emeteur_id`, `visu_public`, `visu_ecole`, `visu_classe`, `titre`, `contenu`) 
+ 	VALUES ('1', '2016-08-25 00:00:00', '2016-06-30 00:00:00', '2', true,2,0, 'Rentrée 2015','Notfication obsolete');
+ 
+ /* permet de tester le chainage des notifications 2 sur la (1) */
+  INSERT INTO `schoolnet`.`notification` 
+ 	(`type_id`, `date_creation`, `emeteur_id`, `chain_notif_id`, `visu_public`, `visu_ecole`, `visu_classe`, `titre`, `contenu`) 
+ 	VALUES ('2', '2016-08-25 00:00:00', '4','1', true,2,0, '','Je suis ravie'),
+ 		   ('2', '2016-08-25 00:00:00', '10','1', true,2,0, '','Moi aussi');
+ 		   
+ /* permet de tester l'affichage des contactes
+  INSERT INTO  `schoolnet`.`Amis`
+    (`membre_id`, `ami_id`) 
+    VALUES ('4','5'), ('5','4'),
+           ('6','7'), ('7','6'),
+           ('7','10'), ('10','7');
+           
+           

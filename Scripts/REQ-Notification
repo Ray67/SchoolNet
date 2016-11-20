@@ -1,0 +1,19 @@
+
+SELECT 
+`schoolnet`.`Notification`.`id` as id,  
+`schoolnet`.`Notification`.`titre` as titre,  
+`schoolnet`.`Notification`.`contenu` as contenu,  
+`schoolnet`.`Notification`.`date_creation` as datecreation,  
+`schoolnet`.`Type_Notification`.`code` as type, 
+`schoolnet`.`Type_Notification`.`chain_action` as action, 
+`schoolnet`.`Type_Notification`.`chain_objets` as objets, 
+`schoolnet`.`Membre`.`nom` as expediteur  
+FROM `schoolnet`.`Notification` 
+
+INNER JOIN `schoolnet`.`Type_Notification` ON 
+`schoolnet`.`Notification`.`type_id`
+= `schoolnet`.`Type_Notification`.`id` 
+
+INNER JOIN `schoolnet`.`Membre` ON 
+`schoolnet`.`Notification`.`emeteur_id`
+= `schoolnet`.`Membre`.`id`; 

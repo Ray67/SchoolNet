@@ -1,0 +1,37 @@
+
+Bugs
+---------------------------------------------------------
+Admin : Page Connexion la cb profil ne se remplit pas
+	getValuesforFK ??
+
+
+A tester
+---------------------------------------------------------
+Entity : 
+ - contraintes de type "in (select id from ../..)"
+
+Application :
+ - form pouvant se rappeler elle meme si not ok (sur regex) par exemple
+ - Detail : algo de Form mais la valeur sans édition
+ - Champ affiché mais non modifiable, champ caché (type_HIDDEN ???)
+
+
+Evols
+---------------------------------------------------------
+Entity : 
+ - se passer de exist_constraints si inutile
+   sinon parametrer $tablename 
+ 
+Application : 
+ - TextEdit : rajouter Regular Expression (RegEx) par type
+   avec l'attribut "pattern"
+
+ Authentification :
+  - a chaque connexion enregistrer la date et l'IP
+  - nouvelles fonctionalités 
+  		- hasher le password
+  		- rajouter une fonction réinitialiser le mp
+  		- gérer l'envoi de mail
+  		
+Bootstrap :
+  - pour les menus (WebApplication) et les forms  

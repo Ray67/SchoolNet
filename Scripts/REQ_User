@@ -1,0 +1,22 @@
+
+SELECT
+    `schoolnet`.`Membre`.`id` AS IDMEMBRE,
+    `schoolnet`.`Membre`.`nom` AS NOMMEMBRE,
+	`schoolnet`.`Membre`.`authen_id` AS IDAUTH,
+    `schoolnet`.`Authentification`.`password` AS PASSWORD,
+    `schoolnet`.`Classe`.`id` AS IDCLASSE,
+    `schoolnet`.`Classe`.`nom` AS NOMCLASSE,
+    `schoolnet`.`Classe`.`ecole_id` AS IDECOLE,
+    `schoolnet`.`Ecole`.`nom` AS NOMECOLE
+FROM 
+	`schoolnet`.`Membre`
+
+INNER JOIN `schoolnet`.`Authentification`
+		ON `schoolnet`.`Membre`.`authen_id` = `schoolnet`.`Authentification`.`id`
+INNER JOIN `schoolnet`.`Classe`
+		ON `schoolnet`.`Membre`.`classe_id` = `schoolnet`.`Classe`.`id`
+INNER JOIN `schoolnet`.`Ecole`        
+        ON `schoolnet`.`Classe`.`ecole_id`  = `schoolnet`.`Ecole`.`id`
+        
+WHERE `schoolnet`.`Membre`.`authen_id` = 
+  AND `schoolnet`.`Authentification`.`password` = 

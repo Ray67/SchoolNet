@@ -1,0 +1,94 @@
+
+CREATE DATABASE `schoolnet`;
+
+
+CREATE TABLE `schoolnet`.`Ecole` ( 
+	`id` INT NOT NULL AUTO_INCREMENT , 
+	`nom` VARCHAR(30) NOT NULL , 
+	PRIMARY KEY (`id`)
+	) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+CREATE TABLE `schoolnet`.`Classe` 
+	( `id` INT NOT NULL AUTO_INCREMENT , 
+	`nom` VARCHAR(15) NOT NULL , 
+	`ecole_id` INT NOT NULL , 
+	PRIMARY KEY (`id`)
+	) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE `schoolnet`.`Classe` ADD INDEX(`ecole_id`);
+
+CREATE TABLE `schoolnet`.`Profil` 
+	( `id` INT NOT NULL AUTO_INCREMENT , 
+	`nom` VARCHAR(15) NOT NULL , 
+	`restriction` VARCHAR(15) NOT NULL , 
+	PRIMARY KEY (`id`)
+	) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+CREATE TABLE `schoolnet`.`Authentification` 
+	( `id` INT NOT NULL AUTO_INCREMENT , 
+	`nom` VARCHAR(30) NOT NULL , 
+	`password` VARCHAR(30) NOT NULL , 
+	`param_connect` VARCHAR(250) NULL , 
+	`der_connexion` DATETIME NULL , 
+	`ip_connexion` VARCHAR(15) NULL , 
+	`profil_id` INT NOT NULL , 
+	PRIMARY KEY (`id`)
+	) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE `schoolnet`.`Authentification` ADD INDEX(`profil_id`);
+
+CREATE TABLE `schoolnet`.`Membre` 
+	( `id` INT NOT NULL AUTO_INCREMENT , 
+	`nom` VARCHAR(30) NOT NULL , 
+	`classe_id` INT NOT NULL , 
+	`authen_id` INT NOT NULL,
+	PRIMARY KEY (`id`)
+	) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE `schoolnet`.`Membre` ADD INDEX(`classe_id`);
+ALTER TABLE `schoolnet`.`Membre` ADD INDEX(`authen_id`);
+
+CREATE TABLE `schoolnet`.`Amis` 
+	( `id` INT NOT NULL AUTO_INCREMENT , 
+	`membre_id` INT NOT NULL , 
+	`ami_id` INT NOT NULL , 
+	PRIMARY KEY (`id`)
+	) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE `schoolnet`.`Amis` ADD INDEX(`membre_id`);
+ALTER TABLE `schoolnet`.`Amis` ADD INDEX(`ami_id`);
+
+CREATE TABLE `schoolnet`.`Type_Notification` 
+	( `id` INT NOT NULL AUTO_INCREMENT , 
+	`code` VARCHAR(15) NOT NULL , 
+	`chain_type` INT NOT NULL,
+	`chain_action` VARCHAR(15) NOT NULL,
+	`chain_objets` VARCHAR(15) NOT NULL,
+	PRIMARY KEY (`id`)
+	) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+CREATE TABLE `schoolnet`.`Notification` 
+	( `id` INT NOT NULL AUTO_INCREMENT , 
+	`type_id` INT NOT NULL , 
+	`date_creation` DATETIME NOT NULL , 
+	`date_validite` DATETIME NOT NULL , 
+	`emeteur_id` INT NOT NULL , 
+	`chain_notif_id` INT NOT NULL , 
+	`visu_public` BOOLEAN NOT NULL , 
+	`visu_ecole`  INT NOT NULL,
+	`visu_classe` INT NOT NULL,
+	`restriction` VARCHAR(15) NOT NULL ,
+	`titre` VARCHAR(60) NOT NULL , 
+	`contenu` TEXT NOT NULL , 
+	`accepted` BOOLEAN NOT NULL,
+	PRIMARY KEY (`id`)
+	) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE `schoolnet`.`Notification` ADD INDEX(`type_id`);
+ALTER TABLE `schoolnet`.`Notification` ADD INDEX(`emeteur_id`);
+ALTER TABLE `schoolnet`.`Notification` ADD INDEX(`chain_notif_id`);
+	
+CREATE TABLE `schoolnet`.`Destinataire`
+    ( `id` INT NOT NULL AUTO_INCREMENT , 
+    `notification_id` INT NOT NULL,
+    `membre_id` INT NOT NULL, 
+	PRIMARY KEY (`id`)
+	) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE `schoolnet`.`Destinataire` ADD INDEX(`notification_id`);
+ALTER TABLE `schoolnet`.`Destinataire` ADD INDEX(`membre_id`);
+	

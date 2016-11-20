@@ -1,0 +1,52 @@
+
+
+ /* POUR LA LISTE DES ECOLES 
+ 	resultat : 2
+ 	------------------------ */
+ SELECT DISTINCT(`schoolnet`.`Classe`.`ecole_id`)
+  FROM `schoolnet`.`Classe`
+  INNER JOIN `schoolnet`.`Membre`
+    ON `schoolnet`.`Classe`.`id`=`schoolnet`.`Membre`.`classe_id`
+       AND `schoolnet`.`Membre`.`authen_id` = 4;
+ 
+ /* POUR LA LISTE DES CLASSES
+	resultat : 2
+    ------------------------- */
+SELECT DISTINCT(`schoolnet`.`Membre`.`classe_id`) 
+  FROM `schoolnet`.`Membre` 
+ WHERE `schoolnet`.`Membre`.`authen_id` = 4;
+ 
+ 
+ /* POUR LA LISTE DES DESTINATAIRES
+ 	resultat (4,6)
+    ------------------------------- */
+ SELECT `schoolnet`.`Membre`.`id`
+   FROM `schoolnet`.`Membre`
+  WHERE `schoolnet`.`Membre`.`authen_id` = 4;
+
+  
+ /* EVOLUTION DE LA REQUETE NOTIFICATION
+    resultat : 2 rows
+    ------------------------------------ */
+ SELECT 
+`schoolnet`.`Notification`.`id` as id,  
+`schoolnet`.`Notification`.`titre` as titre,  
+`schoolnet`.`Notification`.`contenu` as contenu,  
+`schoolnet`.`Notification`.`date_creation` as datecreation,  
+`schoolnet`.`Type_Notification`.`code` as type, 
+`schoolnet`.`Type_Notification`.`chain_action` as action, 
+`schoolnet`.`Type_Notification`.`chain_objets` as objets, 
+`schoolnet`.`Membre`.`nom` as expediteur  
+FROM `schoolnet`.`Notification` 
+
+INNER JOIN `schoolnet`.`Type_Notification` ON 
+`schoolnet`.`Notification`.`type_id`
+= `schoolnet`.`Type_Notification`.`id` 
+
+INNER JOIN `schoolnet`.`Membre` ON 
+`schoolnet`.`Notification`.`emeteur_id`
+= `schoolnet`.`Membre`.`id`
+
+WHERE 
+( true AND (`schoolnet`.`Notification`.`visu_ecole` = 2 
+            OR `schoolnet`.`Notification`.`visu_classe` = 2));
