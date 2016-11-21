@@ -101,43 +101,40 @@ class Notification extends Entity
      */
     public function setFilter($perimetre=0, $type=0, $membre=0)
     {  
-        $this->addConstraint(self::fld_DESTINATAIRE, (($membre==0) ? $this->membres : $membre));
+        $this->addConstraint(self::fld_DESTINATAIRE, (($membre!=0) ? $membre : $this->membres));
         $this->removeClause('filter_type');
-        $this->removeClause('prive 1');
+        $this->removeClause('tous');
+        $this->removeClause('prive');
         $this->removeClause('public');
-        $this->removeClause('public 1');
-        $this->removeClause('public 2');
         
-        if ($type !== 0)
-             $this->addClause('filter_type',self::fld_TYPEID,'=',$type);
+        var_dump($membre);
+        var_dump($this->ecoles);
+        
+        if ($type != 0) $this->addClause('filter_type',self::fld_TYPEID,'=',$type);
         
              
-        if ($perimetre == 2)
-        {
-            $this->addClause('prive 1',self::fld_DESTINATAIRE, 'IS NOT NULL');
-        } else 
-        {
-            $clause_ecole = ($membre != 0 
-                          ? $this->Clause(self::fld_VISUECOLE, ' = ',  firstItem($this->ecoles[$membre]))
-                          : (count($this->ecoles)==1 
-                                  ? $this->Clause(self::fld_VISUECOLE, ' = ', firstItem($this->ecoles))
-                                  : $this->Clause(self::fld_VISUECOLE, ' IN ', $this->ecoles)));
+        $clause_prive = $this->Clause($this->Clause(self::fld_VISUPUBLIC,'= 0'),
+                                      ' AND ',
+                                      $this->Clause(self::fld_DESTINATAIRE, 'IS NOT NULL'));
+        
+        $clause_ecole = ($membre != 0 
+                      ? $this->Clause(self::fld_VISUECOLE, ' = ',  firstItem($this->ecoles[$membre]))
+                      : (count($this->ecoles)==1 
+                             ? $this->Clause(self::fld_VISUECOLE, ' = ', firstItem($this->ecoles))
+                             : $this->Clause(self::fld_VISUECOLE, ' IN ', $this->ecoles)));
+        $clause_classe = ($membre != 0 
+                       ? $this->Clause(self::fld_VISUCLASSE, ' = ',  firstItem($this->classes[$membre]))
+                       : (count($this->classes)==1 
+                              ? $this->Clause(self::fld_VISUCLASSE, ' = ', firstItem($this->classes))
+                              : $this->Clause(self::fld_VISUCLASSE, ' IN ', $this->classes)));
+        $clause_public = $this->Clause($this->Clause(self::fld_VISUPUBLIC,'<> 0'),
+                                       ' AND ',
+                                       $this->Clause($clause_ecole, ' OR ', $clause_classe));
+        
+        if ($perimetre==0) $this->addClause('tous', $clause_public, ' OR ', $clause_prive);
+        if ($perimetre==1) $this->addClause('public',$clause_public);
+        if ($perimetre==2) $this->addClause('prive',$clause_prive);
             
-            $clause_classe = ($membre != 0 
-                          ? $this->Clause(self::fld_VISUCLASSE, ' = ',  firstItem($this->classes[$membre]))
-                          : (count($this->classes)==1 
-                                  ? $this->Clause(self::fld_VISUCLASSE, ' = ', firstItem($this->classes))
-                                  : $this->Clause(self::fld_VISUCLASSE, ' IN ', $this->classes)));
-
-            if ($perimetre == 1)
-                $this->addClause('public',self::fld_DESTINATAIRE, 'IS NULL');
-            $this->addClause('public 1', $this->Clause(self::fld_VISUECOLE,'= 0')
-                                       , ' OR '
-                                       , $clause_ecole);
-            $this->addClause('public 2', $this->Clause(self::fld_VISUCLASSE,'= 0')
-                                       , ' OR '
-                                       , $clause_classe);
-        }
     }
 
     /**
