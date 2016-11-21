@@ -255,7 +255,7 @@ class Schoolnet extends CommonApp
 /*
  * Corps de l'application
  */
-
+session_start();
 $myApp = new Schoolnet();
 if ($myApp->Connect())
 {

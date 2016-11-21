@@ -70,7 +70,8 @@ abstract class Application
      */
     public function OpenSession()
     {
-        session_start();
+        if (!isset($_SESSION["id"]))
+            $_SESSION["id"] = $this->auth->getValue(Authentification::fld_AUTHID);
         
      /* Gestion des $Get 
         --------------------------------------------------------------------------- */

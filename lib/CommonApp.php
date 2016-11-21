@@ -45,6 +45,7 @@ abstract class CommonApp extends WebApplication
         {
             if (!($res = $this->auth->connect($_POST["identifiant"], $_POST["password"])))
                 header('location:Connect.php?err=1&ReturnURL='.get_class($this).'.php');
+
         } 
         else  header('location:Connect.php?err=0&ReturnURL='.get_class($this).'.php');
 

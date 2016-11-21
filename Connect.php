@@ -78,7 +78,7 @@ class Connect extends CommonApp
 /*
  * Corps de l'application
  */
-
+session_start();
 $myApp = new Connect();
 $myApp->OpenSession();
 if ($myApp->Connect()) 

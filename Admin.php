@@ -123,6 +123,7 @@ class Admin extends CommonApp
 /*
  * Corps de l'application
  */
+session_start();
 $myApp = new Admin();
 
 if ($myApp->Connect())

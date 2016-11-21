@@ -39,7 +39,9 @@ class Chain extends Application
       
 
 $myApp = new Chain();
-$myApp->OpenSession();
-
-die($myApp->notif->Get_Chained($_GET['notif']));
-
+session_start();
+if ($myApp->Connect())
+{
+    $myApp->OpenSession();
+    die($myApp->notif->Get_Chained($_GET['notif']));
+}

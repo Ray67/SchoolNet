@@ -75,8 +75,6 @@ class Authentification extends Entity
         ], $results, true, true);
         $this->classes = sub_array([$this->getAlias(self::fld_CLASSEID)], $results, true);
         $this->ecoles  = sub_array([$this->getAlias(self::fld_ECOLEID)], $results, true);
-
-        $_SESSION['id'] = $this->id;
     }
 
     public function connect($identifiant, $password) : bool
