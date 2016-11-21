@@ -90,6 +90,11 @@ class Notification extends Entity
         $this->ecoles=$ecoles;
         $this->classes=$classes;
         $this->membres=$membres;
+        
+        $this->addClause('Validite',
+                         $this->Clause(self::fld_VALIDITE, ' IS NULL'),
+                         ' OR ',
+                         $this->Clause(self::fld_VALIDITE, '>= NOW()'));
         $this->setFilter(0,0,0);
     }
     
@@ -99,7 +104,7 @@ class Notification extends Entity
      * @param number $type    (ID de type_notification, 0 pour tous)
      * @param number $membres (ID de Membre, 0 pour tous)
      */
-    public function setFilter($perimetre=0, $type=0, $membre=0)
+    public function setFilter($perimetre="0", $type="0", $membre="0")
     {  
         $this->addConstraint(self::fld_DESTINATAIRE, (($membre!=0) ? $membre : $this->membres));
         $this->removeClause('filter_type');
@@ -107,23 +112,20 @@ class Notification extends Entity
         $this->removeClause('prive');
         $this->removeClause('public');
         
-        var_dump($membre);
-        var_dump($this->ecoles);
-        
-        if ($type != 0) $this->addClause('filter_type',self::fld_TYPEID,'=',$type);
+        if ($type != "0") $this->addClause('filter_type',self::fld_TYPEID,'=',$type);
         
              
         $clause_prive = $this->Clause($this->Clause(self::fld_VISUPUBLIC,'= 0'),
                                       ' AND ',
                                       $this->Clause(self::fld_DESTINATAIRE, 'IS NOT NULL'));
         
-        $clause_ecole = ($membre != 0 
-                      ? $this->Clause(self::fld_VISUECOLE, ' = ',  firstItem($this->ecoles[$membre]))
+        $clause_ecole = ($membre != "0" 
+                      ? $this->Clause(self::fld_VISUECOLE, ' = ',  firstItem($this->membres[$membre]['EcoleId']))
                       : (count($this->ecoles)==1 
                              ? $this->Clause(self::fld_VISUECOLE, ' = ', firstItem($this->ecoles))
                              : $this->Clause(self::fld_VISUECOLE, ' IN ', $this->ecoles)));
-        $clause_classe = ($membre != 0 
-                       ? $this->Clause(self::fld_VISUCLASSE, ' = ',  firstItem($this->classes[$membre]))
+        $clause_classe = ($membre != "0" 
+                       ? $this->Clause(self::fld_VISUCLASSE, ' = ',  firstItem($this->membres[$membre]['ClasseId']))
                        : (count($this->classes)==1 
                               ? $this->Clause(self::fld_VISUCLASSE, ' = ', firstItem($this->classes))
                               : $this->Clause(self::fld_VISUCLASSE, ' IN ', $this->classes)));
@@ -131,9 +133,9 @@ class Notification extends Entity
                                        ' AND ',
                                        $this->Clause($clause_ecole, ' OR ', $clause_classe));
         
-        if ($perimetre==0) $this->addClause('tous', $clause_public, ' OR ', $clause_prive);
-        if ($perimetre==1) $this->addClause('public',$clause_public);
-        if ($perimetre==2) $this->addClause('prive',$clause_prive);
+        if ($perimetre=="0") $this->addClause('tous', $clause_public, ' OR ', $clause_prive);
+        if ($perimetre=="1") $this->addClause('public',$clause_public);
+        if ($perimetre=="2") $this->addClause('prive',$clause_prive);
             
     }
 

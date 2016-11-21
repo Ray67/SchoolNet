@@ -238,7 +238,6 @@ class Schoolnet extends CommonApp
         $this->notif->setFilter($this->filter['filter_perimetre'],
                                 $this->filter['filter_type'],
                                 $this->filter['filter_destinataire']);
-        $this->notif->debug = true;
         
         foreach ($this->notif->getPrims() as $id => $notif)
         {
