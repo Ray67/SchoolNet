@@ -1,9 +1,10 @@
 <?php
 
-include "lib/SQLTools.php";
-include "Entities/Authentification.php";
-include "lib/Application.php";
-include "archives/Notif.php";
+
+require_once 'RayTools\Autoload.php';
+
+use RayTools\Application\Application;
+use Entities\Notification;
 
 class Chain extends Application
 {
@@ -12,24 +13,57 @@ class Chain extends Application
 
     function OpenSession()
     {   
-        session_start();
-        $this->auth = new Authentification($this->db);
+        parent::OpenSession();
         
-        if   (!isset($_SESSION['id']) 
-           or !isset($_GET['notif']))
-        {
-            die(); exit;
-        }
-        
-        /* Verfication de la notification père */
-        $this->notif = new Notif($this->db, $this->auth);
-        if   (!$this->auth->load($_SESSION["id"]) 
-           or ! $this->notif->isValid($_GET['notif']))
-        {
-            die(); exit;
-        }
+        /* initialisation */
+        $this->notif = new Notification($this->db, $this->auth->ecoles, $this->auth->classes, $this->auth->membres);
+        $this->notif->setFilter();
     }
     
+    
+    /* 
+     * Retourne un div html specifique de notification pour Comment
+     */ 
+    private function divComment() : string
+    {
+        return '<div id="'.$this->notif->getValue(Notification::fld_ID).'" class="notif_chainage">'
+             . $this->notif->getValue(Notification::fld_EMETEUR).' a écrit :<BR>'
+             . $this->notif->getValue(Notification::fld_CONTENT)
+	         . '</div>';    
+    }
+    
+    /* 
+     * Retourne un divhtml specifique de notification pour Inscrit
+     */ 
+    private function divInscrit() : string
+    {
+        return '<div id="'.$this->notif->getValue(Notification::fld_ID).'" class="notif_chainage popup">'
+             . $this->notif->getValue(Notification::fld_EMETEUR).' a répondu<BR>'
+             . $this->notif->getValue(Notification::fld_CONTENT)
+             . '</div>';
+    }
+    
+    /* 
+     * Retourne un divhtml specifique de notification pour Inscrit
+     */ 
+    private function divChain() : string
+    {
+        return '<div id="'.$this->notif->getValue(Notification::fld_ID).'" class="notif_chainage popup">'
+             . $this->notif->getValue(Notification::fld_EMETEUR).'<BR>'
+             . $this->notif->getValue(Notification::fld_CONTENT)
+             . '</div>';
+    }
+    
+    /*
+     * Route le formatage en fonction du type de div
+     */
+    public function div() : string
+    {
+        return (method_exists($this,'div'.$this->notif->getType()) // non trouvé
+                ? $this->{'div'.$this->notif->getType()}()
+                : $this->divChain());
+    }
+
 }
         
         
@@ -40,8 +74,19 @@ class Chain extends Application
 
 $myApp = new Chain();
 session_start();
-if ($myApp->Connect())
+if ($myApp->Connect($_SESSION['id']))
 {
     $myApp->OpenSession();
-    die($myApp->notif->Get_Chained($_GET['notif']));
+    if (($res = $myApp->notif->getChains($_GET['notif'])) != []) 
+    {
+        $html = '';
+        foreach ($res as $key => &$value)
+        { 
+            $myApp->notif->Fill($value);
+            $html .= $myApp->div();
+        }
+        die($html); exit;
+    }
+    else die('Erreur de notification ......................');
 }
+else die('Erreur de connexion ......................');

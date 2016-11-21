@@ -145,10 +145,17 @@ class Notification extends Entity
      */
     public function getPrims()
     {
-        $this->addClause('primaire', self::fld_TYPEID, 'IN', $this->typesprimaires);
+        $this->addClause('types primaires', self::fld_TYPEID, 'IN', $this->typesprimaires);
         $res = $this->GetAll();
-        $this->removeClause('primaire');
+        $this->removeClause('types primaires');
         return $res;
+    }
+    
+    public function getType():string
+    {
+         return (isset($this->types[$this->getValue(self::fld_TYPEID)])
+              ? firstItem($this->types[$this->getValue(self::fld_TYPEID)])
+              : '');
     }
     
     /**
