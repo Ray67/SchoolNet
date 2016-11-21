@@ -67,9 +67,9 @@ abstract class CommonApp extends WebApplication
         $this->addLinkCSS('css/schoolnet1080.css','media="screen and (min-width: 768px)"');
         $this->addLinkCSS('cleditor/jquery.cleditor.css');
 
-        $this->addScriptJS('js/jquery-2.1.4.js');
-        $this->addScriptJS('bootstrap/js/bootstrap.js');
-        $this->addScriptJS('cleditor/jquery.cleditor.min.js');
+        $this->addScriptJS('https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js');
+        $this->addScriptJS('bootstrap/js/bootstrap.js','DEFER="true"');
+        $this->addScriptJS('cleditor/jquery.cleditor.min.js','DEFER="true"');
         $this->addScriptJS('js/schoolnet.js', 'DEFER="true"');
     }
     

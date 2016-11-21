@@ -90,12 +90,7 @@ class Notification extends Entity
         $this->ecoles=$ecoles;
         $this->classes=$classes;
         $this->membres=$membres;
-        
-        //@EVOL faire un appel a setFilter(0,0,0)
-        $this->addConstraint(self::fld_VISUECOLE, $ecoles);
-        $this->addConstraint(self::fld_VISUCLASSE, $classes);
-        $this->addConstraint(self::fld_DESTINATAIRE, $membres);
-        
+        $this->setFilter(0,0,0);
     }
     
     /**
@@ -105,52 +100,49 @@ class Notification extends Entity
      * @param number $membres (ID de Membre, 0 pour tous)
      */
     public function setFilter($perimetre=0, $type=0, $membre=0)
-    {
-        if ($perimetre = 0)
-        {
-         // retirer la clause removeClause
-            $this->removeClause('perimetre');
-        }
-        elseif ($perimetre = 1)
-        {
-            $this->removeClause('perimetre');
-         // clause ecole ou classe is not null : addClause
-            $this->addClause('perimetre', 
-                    $this->Clause(self::fld_VISUECOLE, 'IS NOT NULL'),
-                    'OR',
-                    $this->Clause(self::fld_VISUCLASSE, 'IS NOT NULL'));
-        }
-        elseif ($perimetre = 2)
-        {
-            $this->removeClause('perimetre');
-         // clause ecole et classe is null : addClause
-            $this->addClause('perimetre', 
-                    $this->Clause(self::fld_VISUECOLE, 'IS NULL'),
-                    'AND',
-                    $this->Clause(self::fld_VISUCLASSE, 'IS NULL'));
-        }
+    {  
+        $this->addConstraint(self::fld_DESTINATAIRE, (($membre==0) ? $this->membres : $membre));
+        $this->removeClause('filter_type');
+        $this->removeClause('prive 1');
+        $this->removeClause('public');
+        $this->removeClause('public 1');
+        $this->removeClause('public 2');
         
-        if ($type == 0)
-             $this->removeConstraint(self::fld_TYPEID);
-        else $this->addConstraint(self::fld_TYPEID,$type);
+        if ($type !== 0)
+             $this->addClause('filter_type',self::fld_TYPEID,'=',$type);
         
-        if ($membre=0)
+             
+        if ($perimetre == 2)
         {
-            $this->addConstraint(self::fld_DESTINATAIRE, $this->membres);
-            $this->addConstraint(self::fld_VISUECOLE, $this->ecoles);
-            $this->addConstraint(self::fld_VISUCLASSE, $this->classes);
-        }
-        else 
-        {   // classes et ecoles sont indexés sur membres
-            $this->addConstraint(self::fld_VISUECOLE,    $this->ecoles[$membre]);
-            $this->addConstraint(self::fld_VISUCLASSE,   $this->classes[$membre]);
-            $this->addConstraint(self::fld_DESTINATAIRE, $membres);
+            $this->addClause('prive 1',self::fld_DESTINATAIRE, 'IS NOT NULL');
+        } else 
+        {
+            $clause_ecole = ($membre != 0 
+                          ? $this->Clause(self::fld_VISUECOLE, ' = ',  firstItem($this->ecoles[$membre]))
+                          : (count($this->ecoles)==1 
+                                  ? $this->Clause(self::fld_VISUECOLE, ' = ', firstItem($this->ecoles))
+                                  : $this->Clause(self::fld_VISUECOLE, ' IN ', $this->ecoles)));
+            
+            $clause_classe = ($membre != 0 
+                          ? $this->Clause(self::fld_VISUCLASSE, ' = ',  firstItem($this->classes[$membre]))
+                          : (count($this->classes)==1 
+                                  ? $this->Clause(self::fld_VISUCLASSE, ' = ', firstItem($this->classes))
+                                  : $this->Clause(self::fld_VISUCLASSE, ' IN ', $this->classes)));
+
+            if ($perimetre == 1)
+                $this->addClause('public',self::fld_DESTINATAIRE, 'IS NULL');
+            $this->addClause('public 1', $this->Clause(self::fld_VISUECOLE,'= 0')
+                                       , ' OR '
+                                       , $clause_ecole);
+            $this->addClause('public 2', $this->Clause(self::fld_VISUCLASSE,'= 0')
+                                       , ' OR '
+                                       , $clause_classe);
         }
     }
 
     /**
      * retourne les notifications primaires autorisées
-     * @return \RayTools\Entity\unknown[]
+     * @return unknown[]
      */
     public function getPrims()
     {

@@ -158,7 +158,7 @@ abstract class Fields
      * @param unknown $value
      * @return \RayTools\Entity\Entity
      */
-    public function addConstraint($dbname, &$value)
+    public function addConstraint($dbname, $value)
     {
         $this->columns[$dbname]->constraint = $value;
         return $this;

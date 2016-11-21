@@ -16,7 +16,7 @@ class Schoolnet extends CommonApp
         $notif,
         $filter;
     
-    function OpenSession()
+    public function OpenSession()
     {
         parent::OpenSession();
        
@@ -58,9 +58,9 @@ class Schoolnet extends CommonApp
         $perimetre[]=['id'=>'2', 'lib'=>'Privé'];
         
         $filter = (new Form('filter','','','filter','filter','btn-xs btn-primary','Filtrer'))
-                ->addRow('perimetre', '', Form::type_VARCHAR, 12, true, 0, $perimetre)
-                ->addRow('type','',Form::type_VARCHAR, 12, true, 0,$this->notif->typesprimaires)
-                ->addRow('destinataire','Pour : ',Form::type_VARCHAR, 12, true, 0, $this->auth->membres);
+                ->addRow('perimetre', '', Form::type_INT, 12, true, 0, $perimetre)
+                ->addRow('type','',Form::type_INT, 12, true, 0,$this->notif->typesprimaires)
+                ->addRow('destinataire','Pour : ',Form::type_INT, 12, true, 0, $this->auth->membres);
                 
         $filter->isReloadedAndOk($this->Post); // pour recharger les filtres dans le formulaire avant l'affichage
         
@@ -238,12 +238,14 @@ class Schoolnet extends CommonApp
         $this->notif->setFilter($this->filter['filter_perimetre'],
                                 $this->filter['filter_type'],
                                 $this->filter['filter_destinataire']);
+        $this->notif->debug = true;
+        
         foreach ($this->notif->getPrims() as $id => $notif)
         {
              $this->notif->Fill($notif);
              $html .= $this->div_Notif();
         }                
-
+        $this->notif->debug = false;
         return $html . '</section>';
     }
     
@@ -255,6 +257,8 @@ class Schoolnet extends CommonApp
  */
 
 $myApp = new Schoolnet();
-$myApp->OpenSession();
 if ($myApp->Connect())
+{
+    $myApp->OpenSession();
     echo $myApp->AllInTheBox();
+}

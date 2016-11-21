@@ -124,7 +124,9 @@ class Admin extends CommonApp
  * Corps de l'application
  */
 $myApp = new Admin();
-$myApp->OpenSession();
+
 if ($myApp->Connect())
+{
+    $myApp->OpenSession();
     echo ($myApp->AllInTheBox());
-    
+}   

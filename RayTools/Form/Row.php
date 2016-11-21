@@ -98,6 +98,7 @@ class Row extends Item implements ItemInterface
               . ($this->null_value
                   ? '><option value='
                   . ($this->type== self::type_INT ? '"0"' : 'null')
+                  . ($value === null ? ' selected ' : '')
                   . '></option>'
                   : 'required="required" >');
         foreach($this->constraint as $key => $item)
